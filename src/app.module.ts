@@ -4,16 +4,22 @@ import { AppService } from './app.service';
 import { TodoModule } from './todo/todo.module';
 import { TodoItemModule } from './todo-item/todo-item.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
-  imports: [TodoModule, TodoItemModule,
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
+    TodoModule, 
+    TodoItemModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'db.kxcwgfgmfahtcajagwhv.supabase.co',
-      port: 5432,
-      username: 'postgres',
-      password: 'qZn9ptrO9z3IqYUZ3y7k',
-      database: 'postgres',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT!),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       autoLoadEntities: true,
       synchronize: true,
       ssl: {
