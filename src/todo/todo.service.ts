@@ -3,6 +3,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateTodoDto } from './dto/create-todo.dto';
 import { UpdateTodoDto } from './dto/update-todo.dto';
 import { Todo } from './entities/todo.entity';
+import { TodoItem } from '../todo-item/entities/todo-item.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -16,6 +17,8 @@ export class TodoService {
   constructor(
     @InjectRepository(Todo)
     private readonly repo: Repository<Todo>,
+    @InjectRepository(TodoItem)
+    private readonly todoItemRepo: Repository<TodoItem>,
   ) {}
 
   async create(createTodoDto: CreateTodoDto): Promise<BaseResponse<Todo>> {
@@ -45,7 +48,16 @@ export class TodoService {
   }
 
   async remove(id: string): Promise<void> {
-    const result = await this.repo.delete(id as any);
-    if (!result.affected) throw new NotFoundException('Todo not found');
+    // 1. Primero verificar que el todo existe
+    const todo = await this.repo.findOne({ where: { id: id as any } });
+    if (!todo) {
+      throw new NotFoundException('Todo not found');
+    }
+    
+    // 2. Eliminar todos los TodoItems que pertenecen a este Todo
+    await this.todoItemRepo.delete({ todoId: id as any });
+    
+    // 3. Ahora eliminar el Todo
+    await this.repo.delete(id as any);
   }
 }

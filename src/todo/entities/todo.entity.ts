@@ -12,6 +12,6 @@ export class Todo {
 	@Column({ type: 'text', name: 'description', nullable: true })
 	description?: string;
 
-		@OneToMany(() => TodoItem, (item) => item.todo)
+	@OneToMany(() => TodoItem, (item) => item.todo, { cascade: true })
 	items?: TodoItem[];
 }

@@ -2,12 +2,16 @@ import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/commo
 import { TodoItemService } from './todo-item.service';
 import { CreateTodoItemDto } from './dto/create-todo-item.dto';
 import { UpdateTodoItemDto } from './dto/update-todo-item.dto';
+import { ApiTags, ApiOperation, ApiResponse } from '@nestjs/swagger';
 
+@ApiTags('Todo Items')
 @Controller('todo-item')
 export class TodoItemController {
   constructor(private readonly todoItemService: TodoItemService) {}
 
   @Post()
+  @ApiOperation({ summary: 'Crear un nuevo item para un todo' })
+  @ApiResponse({ status: 201, description: 'Todo item creado exitosamente' })
   create(@Body() createTodoItemDto: CreateTodoItemDto) { return this.todoItemService.create(createTodoItemDto); }
 
   @Get()
