@@ -3,25 +3,19 @@ import { Todo } from '../../todo/entities/todo.entity';
 
 @Entity('ToDoItem')
 export class TodoItem {
-	@PrimaryGeneratedColumn({ type: 'bigint', name: 'itemId' })
-	itemId: string;
+	@PrimaryGeneratedColumn({ type: 'bigint', name: 'id' })
+	id: number;
 
-	@Column({ type: 'varchar', name: 'title' })
-	title: string;
+	@Column({ type: 'bigint', name: 'todoId' })
+	todoId: number;
 
-	@Column({ type: 'text', name: 'description', nullable: true })
-	description?: string;
+	@Column({ type: 'nvarchar', length: 255, name: 'name' })
+	name: string;
 
-	@Column({ type: 'boolean', name: 'is_done', default: false })
-	is_done: boolean;
+	@Column({ type: 'bit', name: 'isCompleted', default: false })
+	isCompleted: boolean;
 
-	@Column({ type: 'date', name: 'date_created', nullable: true })
-	date_created?: Date | null;
-
-	@Column({ type: 'bigint', name: 'todoId', nullable: true })
-	todoId?: string | null;
-
-	@ManyToOne(() => Todo, (todo) => todo.items, { nullable: true })
+	@ManyToOne(() => Todo, (todo) => todo.items)
 	@JoinColumn({ name: 'todoId', referencedColumnName: 'id' })
-	todo?: Todo | null;
+	todo?: Todo;
 }

@@ -18,11 +18,11 @@ export class TodoItemController {
   findAll() { return this.todoItemService.findAll(); }
 
   @Get(':id')
-  findOne(@Param('id') id: string) { return this.todoItemService.findOne(id); }
+  findOne(@Param('id') id: string) { return this.todoItemService.findOne(+id); }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoItemDto: UpdateTodoItemDto) { return this.todoItemService.update(id, updateTodoItemDto); }
+  update(@Param('id') id: string, @Body() updateTodoItemDto: UpdateTodoItemDto) { return this.todoItemService.update(+id, updateTodoItemDto); }
 
   @Delete(':id')
-  remove(@Param('id') id: string) { return this.todoItemService.remove(id); }
+  remove(@Param('id') id: string) { return this.todoItemService.remove(+id); }
 }

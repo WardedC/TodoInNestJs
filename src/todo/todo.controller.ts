@@ -23,11 +23,11 @@ export class TodoController {
   findAllWithItems() { return this.todoService.findAllWithItems(); }
 
   @Get(':id')
-  findOne(@Param('id') id: string) { return this.todoService.findOne(id); }
+  findOne(@Param('id') id: string) { return this.todoService.findOne(+id); }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) { return this.todoService.update(id, updateTodoDto); }
+  update(@Param('id') id: string, @Body() updateTodoDto: UpdateTodoDto) { return this.todoService.update(+id, updateTodoDto); }
 
   @Delete(':id')
-  remove(@Param('id') id: string) { return this.todoService.remove(id); }
+  remove(@Param('id') id: string) { return this.todoService.remove(+id); }
 }

@@ -35,29 +35,29 @@ export class TodoService {
     return this.repo.find({ relations: ['items'] });
   }
 
-  async findOne(id: string): Promise<Todo> {
-    const todo = await this.repo.findOne({ where: { id } as any, relations: ['items'] });
+  async findOne(id: number): Promise<Todo> {
+    const todo = await this.repo.findOne({ where: { id }, relations: ['items'] });
     if (!todo) throw new NotFoundException('Todo not found');
     return todo;
   }
 
-  async update(id: string, updateTodoDto: UpdateTodoDto): Promise<Todo> {
+  async update(id: number, updateTodoDto: UpdateTodoDto): Promise<Todo> {
     const todo = await this.findOne(id);
     Object.assign(todo, updateTodoDto);
     return this.repo.save(todo);
   }
 
-  async remove(id: string): Promise<void> {
+  async remove(id: number): Promise<void> {
     // 1. Primero verificar que el todo existe
-    const todo = await this.repo.findOne({ where: { id: id as any } });
+    const todo = await this.repo.findOne({ where: { id } });
     if (!todo) {
       throw new NotFoundException('Todo not found');
     }
     
     // 2. Eliminar todos los TodoItems que pertenecen a este Todo
-    await this.todoItemRepo.delete({ todoId: id as any });
+    await this.todoItemRepo.delete({ todoId: id });
     
     // 3. Ahora eliminar el Todo
-    await this.repo.delete(id as any);
+    await this.repo.delete(id);
   }
 }

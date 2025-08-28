@@ -2,22 +2,21 @@ import { ApiProperty } from '@nestjs/swagger';
 
 export class CreateTodoItemDto {
 	@ApiProperty({
-		description: 'Título del item',
+		description: 'ID del todo al que pertenece este item',
+		example: 1
+	})
+	todoId: number;
+
+	@ApiProperty({
+		description: 'Nombre del item',
 		example: 'Configurar base de datos'
 	})
-	title: string;
+	name: string;
 
 	@ApiProperty({
-		description: 'Descripción opcional del item',
-		example: 'Conectar con Supabase y configurar las entidades',
+		description: 'Si el item está completado o no',
+		example: false,
 		required: false
 	})
-	description?: string;
-
-	@ApiProperty({
-		description: 'ID del todo al que pertenece este item',
-		example: 1,
-		required: false
-	})
-	todoId?: number;
+	isCompleted?: boolean;
 }
